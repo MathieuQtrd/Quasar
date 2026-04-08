@@ -83,7 +83,8 @@
         "tags": [
             { "id": 11, "name": "Agneau", "href": "agneau" },
             { "id": 4, "name": "Oignons", "href": "oignons" },
-            { "id": 6, "name": "Frites", "href": "frites" }
+            { "id": 6, "name": "Frites", "href": "frites" },
+            { "id": 7, "name": "Menu", "href": "menu" }
         ],
         "category": { "id": 6, "name": "Kebab"}
     },
@@ -141,6 +142,21 @@
         "tags": [
             { "id": 16, "name": "Figue", "href": "figue" },
             { "id": 17, "name": "Chèvre", "href": "chevre" },
+            { "id": 8, "name": "Salade", "href": "salade" }
+        ],
+        "category": { "id": 13, "name": "Salade"}
+    },
+    {
+        "id": 11,
+        "name": "Salade Oeuf oignons",
+        "img": {
+            "src": "https://cdn.pixabay.com/photo/2015/12/16/09/40/salad-plate-1095648_1280.jpg",
+            "alt": "Image Oeuf oignons"
+        },
+        "price": 7,
+        "tags": [
+            { "id": 18, "name": "Oeuf", "href": "oeuf" },
+            { "id": 4, "name": "Oignons", "href": "oignons" },
             { "id": 8, "name": "Salade", "href": "salade" }
         ],
         "category": { "id": 13, "name": "Salade"}

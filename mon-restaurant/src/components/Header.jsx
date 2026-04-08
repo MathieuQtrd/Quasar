@@ -1,6 +1,8 @@
 import Cart from "./Cart"
 
+
 const Header = () => {
+
     return (
         <header>
             <div>

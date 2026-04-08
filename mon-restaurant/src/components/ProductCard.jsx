@@ -1,36 +1,60 @@
-import Button from "./Button"
-const Card = ({product, classList}) => {
+import { useContext } from "react"
+import TagButton from "./TagButton"
+import CartButton from "./CartButton"
+import { Col, Card } from 'react-bootstrap'
+import CartContext from "../context/CartContext"
+
+const ProductCard = ({ product, classList, col }) => {
+    const { dispatch } = useContext(CartContext)
+
+
+
     return (
-        <div className={classList}>
-            <div className="card">
-                <img src={product.img.src} alt={product.img.alt} className="card-img-top" />
-                <div className="card-body">
-                    <h5 className="card-title pb-3 border-bottom d-flex justify-content-between">
+        <Col md={col} className={classList}>
+            <Card>
+                <Card.Img variant="top" src={product.img.src} alt={product.img.alt} />
+                <Card.Body>
+                    <Card.Title className="card-title pb-3 border-bottom d-flex justify-content-between">
                         <span>{product.name}</span>
                         <span>{product.price} €</span>
-                    </h5>
+                    </Card.Title>
                     {product.tags.length > 0 && (
-                        <p className="card-text py-2 border-bottom">
+                        <Card.Text className="py-2 border-bottom">
                             {product.tags?.map(tag => (
-                                <Button
+                                <TagButton
                                     key={tag.id}
                                     name={tag.name}
                                     href={tag.href}
-                                    classList="btn btn-outline-dark me-1 mb-1 btn-sm"
+                                    classList="me-1 mb-1 btn-sm"
+                                    variant="outline-dark"
                                 />
                             ))}
-                        </p>                        
+                        </Card.Text>
                     )}
-                    <Button
-                        id={product.id}
-                        name="Ajouter au panier"
-                        href={""}
-                        classList="btn btn-outline-primary w-100"
-                    />
-                </div>
-            </div>
-        </div>
+                    <Col className="d-flex justify-content-between ">
+                        <CartButton
+                            id={product.id}
+                            name="Retirer"
+                            // href={""}
+                            classList="w-25"
+                            variant="outline-danger"
+                            onButtonClick={(e) => dispatch({ type: "remove", product })}
+                            iconClass="bi bi-cart-dash"
+                        />
+                        <CartButton
+                            id={product.id}
+                            name="Ajouter"
+                            // href={""}
+                            classList="w-25"
+                            variant="outline-primary"
+                            onButtonClick={(e) => dispatch({ type: "add", product })}
+                            iconClass="bi bi-cart-plus"
+                        />
+                    </Col>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }
 
-export default Card
+export default ProductCard

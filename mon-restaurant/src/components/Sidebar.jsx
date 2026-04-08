@@ -1,26 +1,12 @@
 import CategoriesList from "./CategoriesList"
 import InputGroup from "./InputGroup"
-import Button from "./Button"
+import TagButton from "./TagButton"
+import { Col } from 'react-bootstrap'
 
-// const categories = [
-//     { id: 1, name: "Burger" },
-//     { id: 2, name: "Pizza" },
-//     { id: 3, name: "Kebab" },
-//     { id: 4, name: "Poulet Frît" },
-//     { id: 5, name: "Accompagnements" }
-// ]
-
-// const tags = [
-//     { id: 1, name: "Boeuf", href: "boeuf" },
-//     { id: 2, name: "Agneau", href: "agneau" },
-//     { id: 3, name: "Tomate", href: "tomate" },
-//     { id: 4, name: "Oignons", href: "oignons" },
-//     { id: 5, name: "Emmental", href: "emmental" }
-// ]
 
 const Sidebar = ({categories, tags}) => {
     return (
-        <div className="col-sm-3">
+        <Col md="3">
             <CategoriesList
                 categories={categories}
             />
@@ -44,15 +30,16 @@ const Sidebar = ({categories, tags}) => {
             </div>
             <div className="my-3 border p-3">
                 {tags?.map(tag => (
-                    <Button 
+                    <TagButton 
                         key={tag.id}
                         name={tag.name}
                         href={tag.href}
-                        classList="btn btn-outline-dark me-1 mb-1 btn-sm"
+                        classList="me-1 mb-1 btn-sm"
+                        variant="outline-dark"
                     />
                 ))}
             </div>
-        </div>
+        </Col>
     )
 }
 

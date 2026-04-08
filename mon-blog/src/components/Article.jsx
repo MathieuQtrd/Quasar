@@ -1,4 +1,7 @@
+import { useContext } from 'react'
+import { Button, Card, Col } from 'react-bootstrap'
 
+import SearchContext from '../context/SearchContext'
 // const Article = (props) => {
 //     console.log(props)
 //     return (
@@ -81,22 +84,35 @@
 //     )
 // }
 
-const Article = ({img, title, keywords = [], tags, text}) => {
+const Article = ({ img, title, keywords = [], tags, text }) => {
     // console.log(props)
+    const {setSearch} = useContext(SearchContext)
     return (
-        <div className="col-md-6 mb-3">
-            <img src={img.src} alt={img.alt} className='img-fluid' />
-            <h2 className="my-3">{title}</h2>
+        <Col md={4} className="mb-3">
+            <Card>
+                <Card.Img variant="top" src={img.src} alt={img.alt} />
+                <Card.Body>
+                <Card.Title>{title}</Card.Title>
 
-            { tags?.map(tag => (
-                <a href={`/tags/${tag.name}`} className="btn btn-outline-dark me-2 mb-2" key={tag.id}>{tag.name}</a>
-            )) }
+                {tags?.map(tag => (
+                    <Button 
+                        as="span" 
+                        className="me-2 mb-2" 
+                        variant="outline-dark"
+                        key={tag.id}
+                        onClick={() => setSearch(tag.name)}
+                    >
+                        {tag.name}
+                    </Button>
+                ))}
 
-            <hr />
-            <p>
-                {text}
-            </p>
-        </div>
+                <hr />
+                <Card.Text>
+                    {text}
+                </Card.Text>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }
 export default Article
