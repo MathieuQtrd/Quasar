@@ -41,8 +41,16 @@ export default function App() {
   //   .finally(() => setLoading(false))
   // }, [])
 
+  
   useEffect(() => {
     const fetchTasks = async () => {
+
+      console.log(import.meta.env)
+      console.log(import.meta.env.VITE_API_URL)
+
+      // On récupère l'url de l'api depuis le fichier.env
+      const API_URL = import.meta.env.VITE_API_URL
+
       // async pour préciser que la fonction est asynchrone
       // synchrone : le code s'exécute ligne par ligne, on attend chaque instruction avant de passer à la suivante
       // asynchrone : le code continu et n'attends pas les instruction précédente (par exemple un traitement ajax (fetch))
@@ -55,7 +63,8 @@ export default function App() {
       try {
         // const response = await fetch("https://gpojpzjgpjz0") // erreur sur le nom de domaine
         // const response = await fetch("https://jsonplaceholder.typicode.com/lsdhlhrgz") //  404
-        const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+        // const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+        const response = await fetch(`${API_URL}todos?_limit=10`)
 
         if(!response.ok) {
           throw new Error("ERREUR HTTP")

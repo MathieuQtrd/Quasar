@@ -1,6 +1,6 @@
-import { Card } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, onDeleteTask }) {
     const priorityColor = (priority) => {
         if (priority === 'low') return 'btn btn-success span-cursor'
         if (priority === 'medium') return 'btn btn-warning span-cursor'
@@ -26,6 +26,13 @@ export default function TaskCard({ task }) {
                     <span className={priorityColor(task.priority)}>
                         {priorityText(task.priority)}
                     </span>
+                    <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => onDeleteTask(task.id)}
+                    >
+                        Supprimer
+                    </Button>
                 </div>
             </Card.Body>
         </Card>

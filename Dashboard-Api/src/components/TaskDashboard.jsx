@@ -1,32 +1,56 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, Col, Card } from 'react-bootstrap'
 import TaskForm from './TaskForm';
 import TaskList from './TaskList';
+import { getTasks, createTask, deleteTask } from '../services/services'
+import LoadingMessage from './LoadingMessage';
+import ErrorAlert from './ErrorAlert';
+
 export default function TaskDashboard() {
- 
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            title: 'Faire le devis du projet Automobile',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut doloremque iure in eos veniam similique praesentium atque quidem repudiandae animi voluptatibus quia voluptatum, iusto repellendus hic amet. Vel, quis saepe!',
-            priority: 'low',
-            done: false
-        },
-        {
-            id: 2,
-            title: 'Faire le slider du projet blog cuisine',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut doloremque iure in eos veniam similique praesentium atque quidem repudiandae animi voluptatibus quia voluptatum, iusto repellendus hic amet. Vel, quis saepe!',
-            priority: 'medium',
-            done: true
-        },
-    ])
-    const addTask = (newTask) => {
+
+    const [tasks, setTasks] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        async function loadTask() {
+            try {
+                setLoading(true)
+                const data = await getTasks(7)
+                setTasks(data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+        loadTask()
+    }, [])
+
+    const addTask = async (newTask) => {
+        try {
+            const createdTask = await createTask(newTask);
+            setTasks((previousTasks) => [createdTask, ...previousTasks]);
+        } catch (err) {
+            setError(err.message);
+        }
         const taskData = {
             id: Date.now(),
             ...newTask
         }
         setTasks([...tasks, taskData])
     }
+
+    const delTask = async (taskId) => {
+        try {
+            await deleteTask(taskId);
+            setTasks((previousTasks) =>
+                previousTasks.filter((task) => task.id !== taskId)
+            );
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     const totalTasks = tasks.length
     const doneTasks = tasks.filter((task) => task.done).length
@@ -56,6 +80,10 @@ export default function TaskDashboard() {
                 <h1 className='mb-1'>Dashboard</h1>
                 <p className='text-muted mb-0'>Tâches</p>
             </div>
+
+            <ErrorAlert message={error} />
+
+            {loading ? <LoadingMessage /> : ''}
 
             {/* Stats */}
             <Row className='g-4 mb-4'>
@@ -89,8 +117,8 @@ export default function TaskDashboard() {
                 <Col lg={4}>
                     <TaskForm onAddTask={addTask} />
                 </Col>
-                <Col lg={8}> 
-                    <TaskList tasks={tasks} />
+                <Col lg={8}>
+                    <TaskList tasks={tasks} onDeleteTask={delTask} />
                 </Col>
             </Row>
         </>
