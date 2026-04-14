@@ -1,0 +1,39 @@
+import { Card } from 'react-bootstrap'
+
+export default function TaskCard({ task }) {
+    const priorityColor = (priority) => {
+        if (priority === 'low') return 'btn btn-success span-cursor'
+        if (priority === 'medium') return 'btn btn-warning span-cursor'
+        return 'btn btn-danger'
+    }
+
+    const priorityText = (priority) => {
+        if (priority === 'low') return 'Basse'
+        if (priority === 'medium') return 'Moyenne'
+        return 'Haute'
+    }
+
+    return (
+        <Card className='shadow-sm border-0'>
+            <Card.Body>
+                <h2 className='h5'>{task.title}</h2>
+                <p>{task.description}</p>
+                <div className='d-flex justify-content-between'>
+                    <span className={task.done ? 'btn btn-success span-cursor' : 'btn btn-warning span-cursor'}>
+                        {task.done ? 'Terminée' : 'En cours'}
+                    </span>
+
+                    <span className={priorityColor(task.priority)}>
+                        {priorityText(task.priority)}
+                    </span>
+                </div>
+            </Card.Body>
+        </Card>
+    )
+}
+
+
+
+
+
+
