@@ -1,7 +1,7 @@
-import { configureStore} from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 // configureStore :
 // Permet de créer le store redux
-// Le store est l'endroit central où seront stockées les données globales de l'application
+// Le store est l'endroit central où seront stockées les données globales de l'application (dans la mémoire de javascript)
 // Le state est centralisé dans le store
 
 import shoppingReducer from '../features/shoppingSlice'

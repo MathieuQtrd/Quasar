@@ -32,3 +32,4 @@ Un seul store qui contient autant de slice que necessaire
 npm install @reduxjs/toolkit react-redux react-bootstrap bootstrap
 ----------------------------------------
 ----------------------------------------
+
