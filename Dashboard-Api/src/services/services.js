@@ -43,7 +43,7 @@ export async function createTask(task) {
         title: task.title,
         description: task.description,
         priority: task.priority,
-        done: task.done 
+        done: !task.done 
     } 
 }
 
