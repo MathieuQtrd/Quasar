@@ -27,6 +27,32 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
 
 })
 
+export const addTask = createAsyncThunk('tasks/addTask', async (task) => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/todos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task),    
+    })
+    const data = await res.json()
+
+    return {
+        id: Date.now(), // on change l'id car l'api renvoie toujours le même id (201)
+        title: data.title,
+        description: 'Tâche provenant de l\'api',
+        priority: 'low',
+        done: data.completed,
+    }
+})
+
+export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id) => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/todos/' + id,  {
+        method: 'DELETE'
+    })
+    return id
+})
+
 const initialState = {
     items: [],
 
@@ -43,29 +69,18 @@ const tasksSlice = createSlice({
     initialState,
 
     reducers: {
-        addTask: (state, action) => {
-            state.items.unshift(action.payload);
-        },
-
-        deleteTask: (state, action) => {
-            state.items = state.items.filter(
-                (task) => task.id !== action.payload
-            )
-        },
-
+        
         // Changer le statut acheté / non acheté
         toggleTaskStatus: (state, action) => {
             // action.payload : l'id du produit
             const item = state.items.find(
                 (task) => task.id === action.payload
             )
-
             // on vérifie
             if(item) {
                 // on inverse
                 item.done = !item.done 
             }
-
         },
 
         // Filtre pour afficher les produit de la liste 
@@ -90,9 +105,35 @@ const tasksSlice = createSlice({
             state.loading = false
             state.erreur = 'Erreur lors du chargement des tâches'
         })
+        .addCase(addTask.pending, (state) => {
+            state.loading = true
+            state.erreur = null
+        })
+        .addCase(addTask.fulfilled, (state, action) => {
+            state.loading = false
+            state.items.unshift(action.payload); // on place les données reçues
+        })
+        .addCase(addTask.rejected, (state) => {
+            state.loading = false
+            state.erreur = 'Erreur lors de la création'
+        })
+        .addCase(deleteTask.pending, (state) => {
+            state.loading = true
+            state.erreur = null
+        })
+        .addCase(deleteTask.fulfilled, (state, action) => {
+            state.loading = false
+            state.items = state.items.filter(
+                (task) => task.id !== action.payload
+            ) // on supprime la tâche concernée
+        })
+        .addCase(deleteTask.rejected, (state) => {
+            state.loading = false
+            state.erreur = 'Erreur lors de la suppression de la tâche'
+        })
     }
 
 })
 
-export const { addTask, deleteTask, toggleTaskStatus, setFilter } = tasksSlice.actions 
+export const { toggleTaskStatus, setFilter } = tasksSlice.actions 
 export default tasksSlice.reducer 

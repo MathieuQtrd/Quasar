@@ -1,6 +1,14 @@
 import { Card, Button } from 'react-bootstrap'
 
-export default function TaskCard({ task, onDeleteTask }) {
+import { useDispatch } from 'react-redux'
+import { deleteTask } from '../features/tasks/tasksSlice'
+
+import { Link } from 'react-router-dom'
+
+export default function TaskCard({ task }) {
+
+    const dispatch = useDispatch()
+
     const priorityColor = (priority) => {
         if (priority === 'low') return 'btn btn-success span-cursor'
         if (priority === 'medium') return 'btn btn-warning span-cursor'
@@ -29,11 +37,13 @@ export default function TaskCard({ task, onDeleteTask }) {
                     <Button
                         variant="outline-danger"
                         size="sm"
-                        onClick={() => onDeleteTask(task.id)}
+                        onClick={() => dispatch(deleteTask(task.id))}
                     >
                         Supprimer
                     </Button>
                 </div>
+                <hr />
+                <Link to={'/task/' + task.id}>Voir le détail</Link>
             </Card.Body>
         </Card>
     )

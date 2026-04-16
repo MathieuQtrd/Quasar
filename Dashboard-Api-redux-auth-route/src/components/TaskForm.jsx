@@ -5,7 +5,13 @@ import TaskSelect from './TaskSelect'
 import TaskTextarea from './TaskTextarea'
 import TaskCheckbox from './TaskCheckbox'
 
-export default function TaskForm({ onAddTask }) {
+import { useDispatch } from 'react-redux'
+import { addTask } from '../features/tasks/tasksSlice'
+
+export default function TaskForm() {
+
+    const dispatch = useDispatch()
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -38,7 +44,14 @@ export default function TaskForm({ onAddTask }) {
         }
         setErrors({})
 
-        onAddTask(formData)
+        // onAddTask(formData)
+        dispatch(addTask({
+            id: Date.now(),
+            title: formData.title,
+            description: formData.description,
+            priority: formData.priority,
+            done: formData.done,
+        }))
         // console.log(tasks)
         setFormData({
             title: '',
