@@ -1,0 +1,12 @@
+- Si la connexion ne fonctionne pas, afficher un message d'erreur pour l'utilisateur
+- Si la connexion fonctionne, on redirige sur la page profile
+- Pour la navbar :
+    - user connecté :
+        - Profile
+        - Se déconnecter
+    - user non connecté :
+        - inscription
+        - connexion
+
+- Sur la page profil :
+    - On affiche les informations du user (pas les tokens)
