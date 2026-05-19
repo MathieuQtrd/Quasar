@@ -12,6 +12,10 @@ import NotFoundPage from "../pages/NotFoundPage"
 import DestinationsPage from "../pages/DestinationsPage"
 import DestinationDetailPage from "../pages/DestinationDetailPage"
 import SearchPage from "../pages/SearchPage"
+import ContactPage from "../pages/ContactPage"
+import LoginPage from "../pages/LoginPage"
+import RegisterPage from "../pages/RegisterPage"
+import ProfilePage from "../pages/ProfilePage"
 
 const router = createBrowserRouter([
     {
@@ -41,6 +45,22 @@ const router = createBrowserRouter([
             {
                 path: "search",
                 element: <SearchPage />
+            },
+            {
+                path: "contact",
+                element: <ContactPage />
+            },
+            {
+                path: "login",
+                element: <LoginPage />
+            },
+            {
+                path: "register",
+                element: <RegisterPage />
+            },
+            {
+                path: "profile",
+                element: <ProfilePage />
             },
             {
                 path: "*",
