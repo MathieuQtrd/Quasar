@@ -4,20 +4,15 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
+// import { useAuth } from "../contexts/AuthContext";
 
-// username : emilys
-// password : emilyspass
+import { useDispatch, useSelector } from "react-redux"
+import { loginUser } from "../features/auth/authSlice";
 
-// username : michaelj
-// password : michaeljpass
 
-// username : isabellad
-// password : isabelladpass
-
-// username : johnd
-// password : johndpass
+// login : admin 
+// password : Admin@123
 
 const loginSchema = yup.object({
     username: yup
@@ -30,8 +25,11 @@ const loginSchema = yup.object({
 function LoginPage() {
 
     const navigate = useNavigate()
-    const { login } = useAuth();
-    const [apiError, setApiError] = useState("")
+    // const [apiError, setApiError] = useState("")
+    // const { login } = useAuth();
+
+    const dispatch = useDispatch()
+    const { status, error } = useSelector((state) => state.auth)
 
     const {
         register,
@@ -47,31 +45,24 @@ function LoginPage() {
     })
 
     const onSubmit = async (data) => {
-        setApiError("");
+        // setApiError("");
 
         try {
-            const response = await fetch(
-                "https://dummyjson.com/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        username: data.username,
-                        password: data.password,
-                    })
-                }
-            )
-            if (!response.ok) {
-                throw new Error("Identifiants incorrects")
-            }
-            const result = await response.json();
-            console.log(result)
-            login(result, result.accessToken)
+
+            await dispatch(loginUser(data)).unwrap()
+            // .unwrap() est une methode de Redux toolkit
+            // Succès : rtourne les données (payload)
+            // Echec : throw error
+
+            // Exemple de réponse Redux :
+            // {
+            //     type: "auth.loginUser/fulfilled", // success
+            //     payload: ...
+            // }
+
             navigate("/profile")
         } catch (error) {
-            setApiError(error.message)
+            console.log(error.message)
         }
     }
 
@@ -80,9 +71,9 @@ function LoginPage() {
         <Card className="mx-auto w-75 shadow-sm border-0">
             <Card.Body>
                 <h1 className="mb-3 pb-3 border-bottom">Connexion</h1>
-                {apiError && (
+                {error && (
                     <Alert variant="danger">
-                        {apiError} 
+                        {error} 
                     </Alert>
                 )}
                 <Form onSubmit={handleSubmit(onSubmit)}>

@@ -2,6 +2,7 @@
 const API_URL = "https://qyklv804.webmo.me/api"
 
 /*
+admin - Admin@123
 ENDPOINT de l'api :
 -------------------
     POST    /auth/register.php
@@ -13,6 +14,12 @@ ENDPOINT de l'api :
     GET     /favorites/index.php
     POST    /favorites/store.php
     POST    /favorites/delete.php
+
+    GET 	/regions/index.php
+    GET 	/destinations/index.php
+    GET 	/destinations/show.php?slug=france
+    GET 	/destinations/by-region.php?region=asie
+	POST    /destinations/store.php - role admin (la région fournie doit être l'id correspondant, slug doit être unique)
 */
 
 // Fonction réutilisable pour effectuer des requete http (fetch) vers l'api

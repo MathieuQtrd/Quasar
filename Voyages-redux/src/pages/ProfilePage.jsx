@@ -1,64 +1,46 @@
 import { useEffect, useState } from "react"
-import { Button, Card, Col, Row, Badge, Alert } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { Button, Card, Col, Row, Badge, Alert, Image } from "react-bootstrap";
+// import { useAuth } from "../contexts/AuthContext";
 
+import { useDispatch, useSelector } from "react-redux"
 
 function ProfilePage() {
 
-    const { user, token } = useAuth()
-    const [userInfos, setUserInfos] = useState(null)
+    const disptach = useDispatch()
+    const { user, status, error } = useSelector((state) => state.auth)
 
-    useEffect(() => {
-        if(!token) {
-            return
-        }
-        const fetchUser = async () => {
-            try {
-                const response = await fetch('https://dummyjson.com/user/me', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`, 
-                    },
-                    credentials: 'include' 
-                })
 
-                if (!response.ok) {
-                    throw new Error("ERREUR HTTP")
-                }
-                const data = await response.json()
-                console.log(data)
-                setUserInfos(data)
-            } catch (error) {
-
-            }
-        }
-        fetchUser();
-    }, [token])
-    
     return (
         <section>
-            <Card className="p-5 shadow-sm border-0">
 
-                <Row>
-                    <Col md={10}>
-                        {/* <h1 className="mb-3 pb-3 border-bottom">Bonjour {user?.firstName} {user?.lastName}</h1> */}
-                        <h1 className="mb-3 pb-3 border-bottom">Bonjour {userInfos?.firstName} {userInfos?.lastName}</h1>
-                        <p className="text-muted mb-0"><span className="fw-bold">Email : </span> {userInfos?.email}</p>
-                        <p className="text-muted mb-0"><span className="fw-bold">Pseudo : </span> {userInfos?.username}</p>
-                        <p className="text-muted mb-0"><span className="fw-bold">Adresse : </span> {userInfos?.address.address} {userInfos?.address.postalCode} {userInfos?.address.city}</p>
-                        <hr />
-                        <p className="text-muted mb-0"><span className="fw-bold">Entreprise : </span> {userInfos?.company.name} ( {userInfos?.company.address.address} {userInfos?.company.address.city} )</p>
-                        <p className="text-muted mb-0"><span className="fw-bold">Secteur : </span> {userInfos?.company.department}</p>
-                        <p className="text-muted mb-0"><span className="fw-bold">Poste : </span> {userInfos?.company.title}</p>
-                        <p></p>
-                    </Col>
-                    <Col md={2}>
-                        <img src={userInfos?.image} alt="" />
-                    </Col>
-                </Row>
+            <Row className="justify-content-center">
+                <Col md={8} lg={6}>
+                    <Card className="p-5 shadow-sm border-0">
+                        <Card.Body>
+                            <div className="d-flex align-items-center gap-3  mb-3">
+                                { user.avatar  || user.image ? (
+                                    <Image 
+                                        src={user.avatar || user.image}
+                                        alt={user.username}
+                                        roundedCircle 
+                                        width="80"
+                                        height="80"
+                                        style={{ objectFit: 'cover'}}
+                                    />                                    
+                                ) : (
+                                    <div></div>
+                                )}
+                                <div>
+                                    <p><b>Username :</b> {user.username}</p>
+                                    <p><b>Statut :</b> {user.role}</p>
+                                </div>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 
 
-            </Card>
         </section>
     )
 }

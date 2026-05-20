@@ -1,12 +1,20 @@
 import { Container, Nav, Navbar as BootstrapNavbar, Button } from "react-bootstrap"
 import { NavLink, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext";
+// import { useAuth } from "../contexts/AuthContext";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux"
+import { logout } from "../features/auth/authSlice"
 
 function Navbar() {
-    const { isAuthenticated, user, logout } = useAuth()
+    // const { isAuthenticated, user, logout } = useAuth()
+
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate()
     const handleLogout = () => {
-        logout()
+        dispatch(logout())
         navigate("/login")
     }
 
@@ -37,7 +45,13 @@ function Navbar() {
                             Contact
                         </Nav.Link>
 
-                        {isAuthenticated ? (
+                        {user?.role === 'admin' && (
+                            <Nav.Link as={NavLink} to="/admin">
+                                Administration
+                            </Nav.Link>
+                        )}
+
+                        {user ? (
                             <>
                                 <Nav.Link as={NavLink} to="/profile" className="me-2">
                                     Profil
@@ -49,7 +63,7 @@ function Navbar() {
                                     Déconnexion
                                 </Button> 
                             </>
-                        ): (
+                        ) : (
                             <>
                                 <Nav.Link as={NavLink} to="/register">
                                     Inscription

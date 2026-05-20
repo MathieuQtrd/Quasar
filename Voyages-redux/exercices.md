@@ -1,12 +1,12 @@
-- Si la connexion ne fonctionne pas, afficher un message d'erreur pour l'utilisateur
-- Si la connexion fonctionne, on redirige sur la page profile
-- Pour la navbar :
-    - user connecté :
-        - Profile
-        - Se déconnecter
-    - user non connecté :
-        - inscription
-        - connexion
+- Faire la page profil : on affiche les données utilisateur
+- faire dans reducer de authSlice l'action logout puis permettre le logout de l'utilisateur
+- Mettre en place register
+    - ajout de registerUser dans authSLice
+    - ajout des addCase liés à registerUser
+- Tester : on crée un ou des comptes et on se connecte avec
+- Après une inscription, on redirige vers login 
 
-- Sur la page profil :
-    - On affiche les informations du user (pas les tokens)
+- Faire une route protégée pour le statut admin
+- préparer un lien dans le menu si l'utilisateur est admin : dashboard
+
+- Pour les avatars : https://www.dicebear.com/

@@ -6,12 +6,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import router from './router/Router';
 import { RouterProvider } from 'react-router-dom';
 
-import { AuthProvider } from "./contexts/AuthContext"
+// import { AuthProvider } from "./contexts/AuthContext"
+import { Provider } from "react-redux"
+import { store } from './app/store';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
+
+    {/* <AuthProvider> */}
+
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </Provider>
+
+    {/* </AuthProvider> */}
+    
   </StrictMode>,
 )

@@ -3,6 +3,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { useDispatch, useSelector } from "react-redux"
+import { registerUser } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+
 const registerSchema = yup.object({
   username: yup
     .string()
@@ -35,10 +39,17 @@ const registerSchema = yup.object({
     .url("L'avatar doit être une url valide")
 });
 function RegisterPage() {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { status, error } = useSelector((state) => state.auth)
+
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(registerSchema),
@@ -53,8 +64,18 @@ function RegisterPage() {
     }
   })
 
-  const onSubmit = () => {
-
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(registerUser(data)).unwrap()
+      navigate('/login')
+    } catch(error) {
+      if( error.message.includes('username') || error.message.includes('email')) {
+        setError('username', {
+          type: 'server',
+          message: 'Ce login ou cet email est déjà utilisé'
+        })
+      }
+    } 
   }
 
 
@@ -62,6 +83,9 @@ function RegisterPage() {
     <Card className="mx-auto w-75 shadow-sm border-0">
       <Card.Body>
         <h1 className="mb-3 pb-3 border-bottom">Inscription</h1>
+        {error && (
+          <Alert variant="danger">{error}</Alert>
+        )}
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group controlId="username">
             <Form.Label>Login</Form.Label>

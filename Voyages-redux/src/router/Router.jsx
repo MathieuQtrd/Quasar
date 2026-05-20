@@ -16,7 +16,11 @@ import ContactPage from "../pages/ContactPage"
 import LoginPage from "../pages/LoginPage"
 import RegisterPage from "../pages/RegisterPage"
 import ProfilePage from "../pages/ProfilePage"
+
+import DashboardPage from "../pages/DashboardPage"
+
 import ProtectedRoute from "../components/ProtectedRoute"
+import AdminRoute from "../components/AdminRoute"
 
 const router = createBrowserRouter([
     {
@@ -65,6 +69,14 @@ const router = createBrowserRouter([
                     <ProtectedRoute>
                         <ProfilePage />
                     </ProtectedRoute>
+                )
+            },
+            {
+                path: "admin",
+                element: (
+                    <AdminRoute>
+                        <DashboardPage />
+                    </AdminRoute>
                 )
             },
             {
